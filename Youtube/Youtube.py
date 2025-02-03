@@ -9,7 +9,7 @@ from yt_dlp import YoutubeDL
 API_ID = "YOUR_API_ID"  # Get from https://my.telegram.org/apps
 API_HASH = "YOUR_API_HASH"
 BOT_TOKEN = "YOUR_BOT_TOKEN"
-SESSION_NAME = "YOUR_SESSION_STRING"  # Use Pyrogram to generate a session
+SESSION_NAME = "YOUR_SESSION_STRING"  # Assistant account session string
 
 # --- Initialize Clients ---
 app = Client("music_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
@@ -21,6 +21,7 @@ def download_audio(url):
     options = {
         'format': 'bestaudio/best',
         'outtmpl': 'song.%(ext)s',
+        'cookiefile': 'cookies.txt',  # Path to your cookies file
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -40,12 +41,12 @@ async def play_song(client, message):
 
     url = message.command[1]
     await message.reply("Downloading audio...")
-    
+
     audio_file = download_audio(url)
-    
+
     await user_client.join_chat(chat_id)  # Ensure assistant joins the call
     await call.join_group_call(chat_id, AudioPiped(audio_file))
-    
+
     await message.reply("Playing in the video chat!")
 
 @app.on_message(filters.command("stop") & filters.private)
