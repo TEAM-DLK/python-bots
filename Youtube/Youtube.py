@@ -21,7 +21,7 @@ def download_audio(url):
     options = {
         'format': 'bestaudio/best',
         'outtmpl': 'song.%(ext)s',
-        'cookiefile': 'cookies.txt',  # Path to your cookies file
+        'cookiefile': 'Youtube/cookies.txt',  # Path to your cookies file
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
